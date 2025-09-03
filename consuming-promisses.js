@@ -42,7 +42,10 @@ const renderCountry = function (data, className = "") {
 
 const getCountryData = function (country) {
   fetch(`https://restcountries.com/v3.1/name/${country}`)
-    .then((response) => response.json())
+    .then(
+      // here from then it is mean that the promise has been fulfilled
+      (response) => response.json()
+    )
     .then((data) => renderCountry(data[0]));
 };
 getCountryData("portugal");
