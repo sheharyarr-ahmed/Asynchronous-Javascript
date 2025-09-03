@@ -1,19 +1,10 @@
 "use strict";
+//call back hell
 //making the first html request but in the xml format
 const btn = document.querySelector(".btn-country");
 const countriesContainer = document.querySelector(".countries");
-const getCountryInfo = function (country) {
-  // setting the api
-  const request = new XMLHttpRequest();
-  request.open("GET", `https://restcountries.com/v3.1/name/${country}`);
-  request.send(); //to send the request to the server/ link mentioned above
-
-  request.addEventListener("load", function () {
-    // converting the format from xml to JSON
-    const data = JSON.parse(this.responseText)[0]; // 👈 Access first object
-    console.log(data);
-
-    const html = `<article class="country">
+const renderCountry = function (data, className = "") {
+  const html = `<article class="country ${className}">
     <img class="country__img" src="${data.flags.png}" />
     <div class="country__data">
       <h3 class="country__name">${data.name.common}</h3>
@@ -30,11 +21,32 @@ const getCountryInfo = function (country) {
     </div>
   </article>`;
 
-    countriesContainer.insertAdjacentHTML("beforeend", html);
-    countriesContainer.style.opacity = 1;
+  countriesContainer.insertAdjacentHTML("beforeend", html);
+  countriesContainer.style.opacity = 1;
+};
+const getCountryandNeighbour = function (country) {
+  // setting the api
+  const request = new XMLHttpRequest();
+  request.open("GET", `https://restcountries.com/v3.1/name/${country}`);
+  request.send(); //to send the request to the server/ link mentioned above
+
+  request.addEventListener("load", function () {
+    // converting the format from xml to JSON
+    const data = JSON.parse(this.responseText)[0]; // 👈 Access first object
+    console.log(data);
+    renderCountry(data);
+    const neighbour = data.borders?.[0];
+    if (!neighbour) return;
+    //making another request.
+    const request2 = new XMLHttpRequest();
+    request2.open("GET", `https://restcountries.com/v3.1/alpha/${neighbour}`);
+    request2.send();
+    request2.addEventListener("load", function () {
+      const data2 = JSON.parse(this.responseText)[0];
+      console.log(data2);
+      renderCountry(data2, "neighbour");
+    });
   });
 };
-
-getCountryInfo("usa");
-getCountryInfo("argentina");
-getCountryInfo("russia");
+// the sequence may differ everytime it appears whatever loads first
+getCountryandNeighbour("usa");
