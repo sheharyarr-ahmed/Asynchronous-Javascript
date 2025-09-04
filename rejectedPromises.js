@@ -6,7 +6,7 @@ const btn = document.querySelector(".btn-country");
 const countriesContainer = document.querySelector(".countries");
 const renderError = function (msg) {
   countriesContainer.insertAdjacentText("beforeend", msg);
-  // countriesContainer.style.opacity = 1;
+  countriesContainer.style.opacity = 1;
 };
 const renderCountry = function (data, className = "") {
   const html = `<article class="country ${className}">
