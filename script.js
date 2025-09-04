@@ -3,6 +3,13 @@
 //making the first html request but in the xml format
 const btn = document.querySelector(".btn-country");
 const countriesContainer = document.querySelector(".countries");
+const getJSON = function (url, errMsg = "Something went wrong") {
+  return fetch(url).then((response) => {
+    console.log(response);
+    if (!response.ok) throw new Error(`${errMsg} ${response.status}`);
+    return response.json();
+  });
+};
 const renderCountry = function (data, className = "") {
   const html = `<article class="country ${className}">
     <img class="country__img" src="${data.flags.png}" />
