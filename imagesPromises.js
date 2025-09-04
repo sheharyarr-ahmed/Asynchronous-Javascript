@@ -1,4 +1,8 @@
 "use strict";
+// •	setTimeout schedules code to run later.
+// •	img.addEventListener("load") triggers asynchronously when the image loads.
+// •	Promises (resolve, reject) represent future values and enable chaining.
+// •	.then() and .catch() callbacks are executed asynchronously via the microtask queue.
 const imgContainer = document.querySelector(".images");
 const wait = function (seconds) {
   return new Promise(function (resolve) {
